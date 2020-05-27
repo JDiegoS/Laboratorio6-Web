@@ -1,0 +1,32 @@
+.card.active{
+    transform: scale(.97);
+    transition: transform .2s;
+}
+.card.flip{
+    transform: rotateY(180deg);
+}
+.card{
+    transform: scale(1);
+    transform-style: preserve-3d;
+    transition: transform .5s;
+    width: 21%;
+    height: 25%;
+    border-radius: 25px;
+    margin: 1%;
+    padding-right: 2%;
+}
+.back-face,
+.front-face{
+    backface-visibility: hidden;
+    background: rgb(61,61,61);
+    background: linear-gradient(90deg, rgba(61,61,61,1) 0%, rgba(117,117,117,1) 41%, rgba(199,199,199,1) 100%);
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+    position: absolute;
+
+}
+.back-face{
+    transform: rotateY(180deg);
+    
+}

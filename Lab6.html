@@ -1,0 +1,177 @@
+<!-- Juan Diego Solorzano 18151 Laboratorio 6-->
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+  <head>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="lab6.css">
+  </head>
+  <body style="height: 100%; background-image: url('https://i.pinimg.com/originals/42/df/10/42df1015f53c10791c85844364c981bf.jpg'); background-size: cover; background-repeat: no-repeat;">
+    <div id="root" style="height: 100%;"></div>
+
+    <!-- Script con react -->
+    <script type="text/babel">
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            contador: 0,
+            flippedOne: false,
+            firstc: "",
+            secc: "",
+            ttm1: "",
+            ttm2: "",
+            pairs: 0,
+            flipping: false
+          };
+          this.flipVerif = this.flipVerif.bind(this);
+          this.matchVerif = this.matchVerif.bind(this);
+        }
+        //Shuffle
+        componentDidMount(){
+          const cards = document.querySelectorAll('.card');
+          cards.forEach(card => {
+            let rand = Math.floor(Math.random() * 15);
+            card.style.order = rand;
+          });
+        }
+        //Flip onclick
+        flipc1(cardse) {
+          
+          var selected = document.getElementById(cardse);
+          var teams = selected.dataset.team;
+          if (teams != '0' && cardse!= this.state.firstc && this.state.flipping == false){
+            selected.classList.toggle('flip');
+            this.flipVerif(teams, cardse);
+          }
+          
+        }
+        //Verificar si es primera seleccion
+        flipVerif(team, cardse){
+          if (this.state.flippedOne){
+            this.setState({flippedOne: false});
+            this.setState({secc: cardse});
+            this.setState({ttm2: team});
+            this.setState({contador: this.state.contador + 1}, this.matchVerif);
+            
+          }
+          else{
+            this.setState({flippedOne: true});
+            this.setState({firstc: cardse});
+            this.setState({ttm1: team});
+
+          }
+        }
+        //Verificar si son pareja
+        matchVerif(){
+          var selected1 = document.getElementById(this.state.firstc);
+          var selected2 = document.getElementById(this.state.secc);
+          if(this.state.ttm1 == this.state.ttm2){
+              selected1.dataset.team = 0;
+              selected2.dataset.team = 0;
+              this.setState({pairs: this.state.pairs + 1}, this.ganoVerif);
+              
+            }
+            else{
+              this.setState({flipping: true});
+              setTimeout(() => {
+              selected1.classList.toggle('flip');
+              selected2.classList.toggle('flip');
+              this.setState({flipping: false});
+              }, 1500);
+              
+            }
+        }
+        //Verificar si gano
+        ganoVerif(){
+          if (this.state.pairs == 8){
+                setTimeout(() => {
+                alert("Victoria!");
+                }, 500);
+              }
+        }
+        render(){
+          return (
+            <div style={{color: "white", height: "100%"}}>
+              <h1 style={{textAlign: "center"}}>Laboratorio 6: Memoria</h1>
+              <h2 style={{textAlign: "center"}}>Movimientos: {this.state.contador} </h2>
+              
+              
+              <div style={{margin: "auto", width: "45%", height: "85%", display: "flex", flexWrap: "wrap", position: "relative"}}>
+                <div id="1A" onClick={this.flipc1.bind(this, "1A")} className='card' data-team="1"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-new-england-patriots-team-logo-2-300x300.png"} />
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="1B" onClick={this.flipc1.bind(this, "1B")} className='card' data-team="1"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-new-england-patriots-team-logo-2-300x300.png"} />
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="2A" onClick={this.flipc1.bind(this, "2A")} className='card' data-team="2"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-pittsburgh-steelers-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="2B" onClick={this.flipc1.bind(this, "2B")} className='card' data-team="2"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-pittsburgh-steelers-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="3A" onClick={this.flipc1.bind(this, "3A")} className='card' data-team="3"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-los-angeles-rams-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="3B" onClick={this.flipc1.bind(this, "3B")} className='card' data-team="3"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-los-angeles-rams-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="4A" onClick={this.flipc1.bind(this, "4A")} className='card' data-team="4">  
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-green-bay-packers-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="4B" onClick={this.flipc1.bind(this, "4B")} className='card' data-team="4">  
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-green-bay-packers-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="5A" onClick={this.flipc1.bind(this, "5A")} className='card' data-team="5"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-baltimore-ravens-team-logo-2-300x300.png"} />
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"} />
+                </div>
+                <div id="5B" onClick={this.flipc1.bind(this, "5B")} className='card' data-team="5"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-baltimore-ravens-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="6A" onClick={this.flipc1.bind(this, "6A")} className='card' data-team="6"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-kansas-city-chiefs-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="6B" onClick={this.flipc1.bind(this, "6B")} className='card' data-team="6"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-kansas-city-chiefs-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="7A" onClick={this.flipc1.bind(this, "7A")} className='card' data-team="7"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-new-orleans-saints-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="7B" onClick={this.flipc1.bind(this, "7B")} className='card' data-team="7"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-new-orleans-saints-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="8A" onClick={this.flipc1.bind(this, "8A")} className='card' data-team="8"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-minnesota-vikings-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+                <div id="8B" onClick={this.flipc1.bind(this, "8B")} className='card' data-team="8"> 
+                  <img className="back-face" src={"http://loodibee.com/wp-content/uploads/nfl-minnesota-vikings-team-logo-2-300x300.png"}/>
+                  <img className="front-face" src={"http://loodibee.com/wp-content/uploads/nfl-league-logo-300x300.png"}/>
+                </div>
+              </div>
+            </div>
+          );
+        }
+      };
+
+      
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+    
+  </body>
+</html>
